@@ -13,7 +13,10 @@ io.on('connection', (socket) => {
       console.log('user disconnected');
     });
     socket.on('sendMessage',(msg)=>{
-        s
+      console.log(msg)
+      let msgSan = sanitize(msg)
+      socket.broadcast.emit("msg",msgSan)
+      socket.emit("msg",msgSan)
     })
   });
 
