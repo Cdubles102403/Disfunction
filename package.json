@@ -1,0 +1,25 @@
+{
+  "name": "simple-fullstack-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "npx nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cdubles102403/Simple-Fullstack-App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cdubles102403/Simple-Fullstack-App/issues"
+  },
+  "homepage": "https://github.com/Cdubles102403/Simple-Fullstack-App#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^3.1.2"
+  }
+}
