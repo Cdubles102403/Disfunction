@@ -1,14 +1,11 @@
-div.post {
-    border: 1px solid black;
-    width: 50%;
-    margin: 10px auto;
+body{
+    background: gray;
+    color:white;
 }
-div.details {
-    background-color: darkgrey;
-    color: white;
+.jumbotron{
+    color:black;
 }
-div.details div {
-    display: inline;
-    width: 30%;
-    border: 1px solid black;
+button{
+    background: white;
+    color:black;
 }
