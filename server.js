@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const sql = require('sqlite3').verbose();
 
-const PORT = 8080;
+const db = new sql.Database('./db/database.db'); //creates connection to DB
+
+const PORT = 8080; //port to start on
 
 app.use(express.static('views'))
 app.use(express.static('public'))
@@ -24,6 +27,14 @@ io.on('connection', (socket) => {
 http.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);
 });
+//login route
+app.post('/login',(req,res)=>{
+
+})
+
+app.post('/signup',(req,res)=>{
+
+})
 
 function sanitize(string) { //stop xss
     const map = {
