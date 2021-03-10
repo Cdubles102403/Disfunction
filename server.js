@@ -5,6 +5,7 @@ const io = require('socket.io')(http);
 
 const PORT = 8080;
 
+app.use(express.static('views'))
 app.use(express.static('public'))
 
 io.on('connection', (socket) => {
