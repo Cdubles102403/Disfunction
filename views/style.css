@@ -1,0 +1,61 @@
+body{
+    background: rgb(129, 125, 111);
+    color:black;
+    font-family: 'Courier New', monospace;
+}
+
+.centered{
+    text-align: center;
+}
+
+.title-thing{
+    background: rgb(255, 215, 69);
+    color: rgb(61, 61, 61);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 550;
+    height: 125px;
+    width:500px;
+}
+div#textboxDiv{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0px;
+    height: 75px;
+    border-top: 1px solid white;
+    padding: 15px;
+}
+#textbox{
+    width: 90%;
+    height: 40px;
+    border-radius: 100px;
+    background-color:rgb(129, 125, 111);
+    border: 1px solid white;
+    padding: 5px;
+}
+button#submit{
+    background: white;
+    color:black;
+    width: 5%;
+    height: 40px;
+    border-radius: 40px;
+    background-color: rgb(255, 215, 69);
+}
+
+.accountBox{
+    width: 500px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgb(255, 215, 69);
+    border-radius: 10px;
+}
