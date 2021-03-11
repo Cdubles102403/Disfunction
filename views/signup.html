@@ -28,10 +28,17 @@
                     }
                     console.log(payload)
                     fetch("/signup", payload)
+                        .then(res=> res.json())
                         .then( res =>{ 
                             console.log(res)
-                            if(res.redirected){
-                                window.location.assign(res.url)
+                            if(res.message == 'redirect'){
+                                window.location.assign(res.target)
+                            }
+                            else if(res.message == 'fix-password'){
+                                $('p#response').text("Your password must have an upper case, a number and be at least 8 characters long")
+                            }
+                            else if(res.message =='already-exists'){
+                                $('p#response').text("user already exists - go to log in page")
                             }
                         })
                 }

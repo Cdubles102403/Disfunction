@@ -44,7 +44,8 @@ app.post('/signup',(req,res)=>{
   var passwordR = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g
   //check password
   if(!password.match(passwordR)){
-    res.send("fix-password")
+    console.log("fix-password")
+    res.send({message:"fix-password"})
     return;
   }
   //check if in database
@@ -57,14 +58,12 @@ app.post('/signup',(req,res)=>{
       let hash = functions.hasher(password)
       console.log(hash)
       db.run(insertSQL,[username,email,hash])
-      res.redirect('/index.html')
+        //redirect
+      res.send({message:'redirect', target:"/"})
     }
     else{ //already exists
-
+      res.send({message:"already-exists"})
     }
   })
-  
-  //redirect
-  
 })
 
