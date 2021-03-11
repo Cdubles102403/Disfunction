@@ -5,12 +5,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="signup-login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $('#submit').click(function(){
+                let email = $('input#emailInput').val()
+                let userName = $('input#usernameInput').val()
+                let password = $('input#passwordInput').val()
+                let passwordConfirm = $('input#confirmPassword').val()
+            if(email !='' && userName != '' && password != '' && passwordConfirm !=''){
+                if(password == passwordConfirm){
+                    const payload ={
+                    body: JSON.stringify({
+                        email : email,
+                        username : userName,
+                        password: password
+                       }),
+                       method:'post',
+                       headers:{
+                           'content-type': 'application/json'
+                       }
+                    }
+                    console.log(payload)
+                    fetch("/signup", payload)
+                        .then( res =>{ 
+                            console.log(res)
+                            if(res.redirected){
+                                window.location.assign(res.url)
+                            }
+                        })
+                }
+                else{
+                    console.log('passwords dont match')
+                    $('p#response').text("password do not match")
+                }
+            }
+            else{
+                $('p#response').text("all fields must be filled in")
+            }   
+            })
+        })
+    </script>
     <title>Document</title>
 </head>
 <body>
     <div class = "accountBox">
         <h1 class="centered">Create Account</h1>
-        <form id="login">
+        <p id='response'></p>
+        <div id="login">
             <label for="emailInput">Email: </label>
             <input type="email" name="emailInput" id="emailInput">
             <br />
@@ -27,8 +69,8 @@
             <input type="password" name="confirmPassword" id="confirmPassword">
             <br />
 
-            <input type="submit" value="Create Account">
-        </form>
+            <button id='submit'>submit</button>
+        </div>
         <p class="centered">Already have an account? Login <a href="login.html">here</a></p>
     </div>
 </body>
