@@ -5,12 +5,15 @@ const io = require('socket.io')(http);
 const sql = require('sqlite3').verbose();
 const crypto = require('crypto')
 const functions = require('./serverReusables/function.js')
-app.use(express.json())
+const cookieParser = require("cookie-parser");
+
 
 const db = new sql.Database('./db/database.db'); //creates connection to DB
 
 const PORT = 8080; //port to start on
 
+app.use(cookieParser())
+app.use(express.json())
 app.use(express.static('views'))
 app.use(express.static('public'))
 
@@ -32,6 +35,37 @@ http.listen(PORT, () => {
 });
 //login route
 app.post('/login',(req,res)=>{
+   let body = req.body
+   //console.log(body)
+   let username = body.username
+   let password = body.password
+   const checkSQL = 'SELECT * FROM members WHERE username = ?'
+
+  db.all(checkSQL,[username],(err,results)=>{
+    if(err) console.error(err)
+    if(results.length>=1){
+      console.log(results)
+      if(functions.hasher(password)==results[0].password){
+        console.log(`succesful login for ${username}`)
+        let token = functions.makeJWT(results[0].ID,results[0].email,results[0].username)
+        //console.log(functions.verifyJWT(token))
+        res.send({message:"successful-login",token:token})
+        return
+      }
+      else{
+        res.send({message:'check-username-and-password'})
+        return
+      }
+    }
+    else{
+      //user not found
+      res.send({message:"user-not-found"})
+      return
+    }
+  })
+})
+
+app.post('/authenticateToken',(req,res)=>{
 
 })
 //signup route

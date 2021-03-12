@@ -4,13 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <link rel="stylesheet" href="signup-login.css">
+    <script>
+        $(function(){
+            $('button#login').click(function(){
+                let username = $("input#usernameInput").val()
+                let password = $("input#passwordInput").val()
+
+                if(username !='' && password != ''){
+                    const payload ={
+                    body: JSON.stringify({
+                        username : username,
+                        password: password
+                       }),
+                       method:'post',
+                       headers:{
+                           'content-type': 'application/json'
+                       }
+                    }
+                    //send login request
+                    fetch('/login',payload)
+                        .then(res => res.json())
+                        .then(res=>{
+                            console.log(res)
+                            if(res.message == 'user-not-found'){$('p#response').text('this user was not found')}
+                            if(res.message =='check-username-and-password'){$('p#response').text('please check your username and password then try again')}
+                            if(res.message='successful-login'){
+                                //succesful login
+                                let token = res.token
+                                Cookies.set('token',token)
+                            }
+                        })
+                }
+                else{
+                    //fill all spots
+                }
+            })
+        })
+    </script>
     <title>Document</title>
 </head>
 <body>
     <div class = "accountBox">
         <h1 class="centered">Login</h1>
-        <form id="login">
+        <p id='response'></p>
+        <div id="login">
             <label for="usernameInput">Username: </label>
             <input type="text" name="usernameInput" id="usernameInput">
             <br />
@@ -19,8 +59,8 @@
             <input type="password" name="passwordInput" id="passwordInput">
             <br />
             
-            <input type="submit" value="Login">
-        </form>
+            <button id='login'>login</button>
+        </div>
         <p class="centered">Don't have an account? Sign up <a href="signup.html">here</a></p>
     </div>
 </body>
