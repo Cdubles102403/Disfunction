@@ -29,12 +29,12 @@ var sanitize = {
     const token = JWT.sign({
       data: payload
     }, 'SecretKey', { expiresIn: '72h' });
-    console.log(token)
+    //console.log(token)
     return token
   },
   verifyJWT: function(token){
     let decodedToken = JWT.verify(token, 'SecretKey');
-    console.log(decodedToken)
+    //console.log(decodedToken)
     return decodedToken
   }
   };

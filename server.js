@@ -26,13 +26,13 @@ io.on('connection', (socket) => {
       //console.log(payload)
       try {
         let decodedToken = functions.verifyJWT(payload.token)
-        console.log(decodedToken) 
+        //console.log(decodedToken) 
         let msgSan = functions.sanitize(payload.message)
         let message = `${msgSan}-${decodedToken.data.username}`
         socket.broadcast.emit("msg",message)
         socket.emit("msg",message)
       } catch (error) {
-        console.log(error)
+        //console.log(error)
         socket.emit('login')
         return
       }
