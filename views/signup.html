@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="signup-login.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script>
         $(function(){
             $('#submit').click(function(){
@@ -19,7 +20,7 @@
                     body: JSON.stringify({
                         email : email,
                         username : userName,
-                        password: password
+                        password: password 
                        }),
                        method:'post',
                        headers:{
@@ -32,6 +33,7 @@
                         .then( res =>{ 
                             console.log(res)
                             if(res.message == 'redirect'){
+                                Cookies.set('token',res.token)
                                 window.location.assign(res.target)
                             }
                             else if(res.message == 'fix-password'){

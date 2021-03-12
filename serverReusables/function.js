@@ -20,15 +20,15 @@ var sanitize = {
     const hash = sha256.update(password).digest('base64');
     return hash;
       },
-  makeJWT : function(id,email,username){
+  makeJWT : function(password,email,username){
     let payload ={
-      id:id,
+      password:password,
       email:email,
       username:username
     }
     const token = JWT.sign({
       data: payload
-    }, 'SecretKey', { expiresIn: '72s' });
+    }, 'SecretKey', { expiresIn: '72h' });
     console.log(token)
     return token
   },

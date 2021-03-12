@@ -31,10 +31,11 @@
                             console.log(res)
                             if(res.message == 'user-not-found'){$('p#response').text('this user was not found')}
                             if(res.message =='check-username-and-password'){$('p#response').text('please check your username and password then try again')}
-                            if(res.message='successful-login'){
+                            if(res.message=='successful-login'){
                                 //succesful login
                                 let token = res.token
                                 Cookies.set('token',token)
+                                window.location.assign(res.target)
                             }
                         })
                 }

@@ -22,11 +22,20 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
-    socket.on('sendMessage',(msg)=>{
-      console.log(msg)
-      let msgSan = sanitize(msg)
-      socket.broadcast.emit("msg",msgSan)
-      socket.emit("msg",msgSan)
+    socket.on('sendMessage',(payload)=>{
+      //console.log(payload)
+      try {
+        let decodedToken = functions.verifyJWT(payload.token)
+        console.log(decodedToken) 
+        let msgSan = functions.sanitize(payload.message)
+        let message = `${msgSan}-${decodedToken.data.username}`
+        socket.broadcast.emit("msg",message)
+        socket.emit("msg",message)
+      } catch (error) {
+        console.log(error)
+        socket.emit('login')
+        return
+      }
     })
   });
 
@@ -47,9 +56,9 @@ app.post('/login',(req,res)=>{
       console.log(results)
       if(functions.hasher(password)==results[0].password){
         console.log(`succesful login for ${username}`)
-        let token = functions.makeJWT(results[0].ID,results[0].email,results[0].username)
+        let token = functions.makeJWT(results[0].password,results[0].email,results[0].username)
         //console.log(functions.verifyJWT(token))
-        res.send({message:"successful-login",token:token})
+        res.send({message:"successful-login",token:token,target:'/'})
         return
       }
       else{
@@ -93,7 +102,8 @@ app.post('/signup',(req,res)=>{
       console.log(hash)
       db.run(insertSQL,[username,email,hash])
         //redirect
-      res.send({message:'redirect', target:"/"})
+      let token = functions.makeJWT(password,email,username)
+      res.send({token:token,message:'redirect', target:"/"})
     }
     else{ //already exists
       res.send({message:"already-exists"})
