@@ -1,18 +1,25 @@
+const fs = require('fs')
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const https = require('https');
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+var server = https.createServer(options, app);
+var io = require('socket.io')(server);
 const sql = require('sqlite3').verbose();
 const crypto = require('crypto')
 const functions = require('./serverReusables/function.js')
-const cookieParser = require("cookie-parser");
+const PORT = 443; //port to start on
 
+server.listen(PORT,()=>{
+console.log(`started on port ${PORT}`)
+})
 
 const db = new sql.Database('./db/database.db'); //creates connection to DB
 
-const PORT = 8080; //port to start on
 
-app.use(cookieParser())
 app.use(express.json())
 app.use(express.static('views'))
 app.use(express.static('public'))
@@ -39,9 +46,6 @@ io.on('connection', (socket) => {
     })
   });
 
-http.listen(PORT, () => {
-  console.log(`listening on *:${PORT}`);
-});
 //login route
 app.post('/login',(req,res)=>{
    let body = req.body
