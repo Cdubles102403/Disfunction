@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
         let decodedToken = functions.verifyJWT(payload.token)
         //console.log(decodedToken) 
         let msgSan = functions.sanitize(payload.message)
-        let message = `${msgSan}-${decodedToken.data.username}`
+        let message = `<p class="message">${msgSan}-<b class="messageTag">${decodedToken.data.username}</b></p>`
         socket.broadcast.emit("msg",message)
         socket.emit("msg",message)
       } catch (error) {

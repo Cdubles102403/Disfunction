@@ -13,14 +13,29 @@ body{
     padding: 20px;
     border-radius: 20px;
     text-align: center;
-    font-size: 60px;
+    font-size:30px;
     font-weight: 550;
-    height: 125px;
-    width:500px;
+    height: 85px;
+    width:250px;
 }
-div#textboxDiv{
+
+div#sidebar{
+    width: 25%;
+    right:0;
     position: fixed;
-    bottom: 0;
+    border-left: 1px solid white;
+    height: 100%;
+    transition: 0.5s;
+}
+
+div#mainBody{
+    margin-right: 25%;
+    transition: 0.5s;
+}
+
+div#textboxDiv{
+    position: absolute;
+    bottom: 0px;
     width: 100%;
     left: 0px;
     height: 75px;
@@ -42,4 +57,10 @@ button#submit{
     height: 40px;
     border-radius: 40px;
     background-color: rgb(255, 215, 69);
+}
+
+p.message{
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    padding: 15px;
 }
