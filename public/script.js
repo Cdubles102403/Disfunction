@@ -31,14 +31,20 @@ $(function(){
 let sidebarOpen = true
 
 function sidebarTest(){
+    const button = document.getElementById("sidebarControl")
+
     if(sidebarOpen){
         document.getElementById("sidebar").style.width = "0%"
-        document.getElementById("mainBody").style.marginRight = "0%"
+        document.getElementById("mainBody").style.width = "100%"
+        document.getElementById("textboxDiv").style.width = "100%"
+        button.style.transform = "scaleX(-1)"
         sidebarOpen = false
     }
     else{
         document.getElementById("sidebar").style.width = "25%"
-        document.getElementById("mainBody").style.marginRight = "25%%"
+        document.getElementById("mainBody").style.width = "75%"
+        document.getElementById("textboxDiv").style.width = "75%"
+        button.style.transform = "scaleX(1)"
         sidebarOpen = true
     }
 }

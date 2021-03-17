@@ -11,21 +11,25 @@
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
-<body class='container'>
-    <button id="sidebarControl" onclick="sidebarTest()">Sidebar</button>
+<body class="container">
     <div id="sidebar">
         <div class = 'title-thing'>
             <p>DISFUNCTION<p>
         </div>
     </div>
     <div id="mainBody">
+        <img src="arrow.png" id="sidebarControl" onclick="sidebarTest()">
+        <div id="serverLabel">
+            <p id="roomName">Room</p>
+            <p id="chatName">Chat</p>
+        </div>
+        <div id="chat">
+        
+        </div>
         <div id="textboxDiv">
             <label for="textbox"></label>
             <input type="text" name="textbox" id="textbox">
             <button id='submit'>Send</button>
-        </div>
-        <div id="chat">
-        
         </div>
     </div>
     <script src="script.js"></script>
