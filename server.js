@@ -81,9 +81,27 @@ app.post('/login',(req,res)=>{
   })
 })
 
-app.post('/authenticateToken',(req,res)=>{
+function saveMessage(sender,room,chat,message){
 
+}
+function makeRoom(name,maker){
+let SQL_MakeChatList='CREATE TABLE ? (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, dateCreated INTEGER)'
+let SQL_makeRoom ='INSERT INTO roomDirectory (name) values(?)'
+db.run(SQL_makeRoom,[name],function (err,results){
+  if(err){console.error(err)}
+  let chatList = `${name}ChatList`
+  db.run(SQL_MakeChatList,[chatList],function(err2,results2){
+    if(err2){console.error(err2)}
+  })
 })
+}
+
+makeRoom("tester2","maker")
+
+function makeChat(roomName,maker){
+
+}
+
 //signup route
 app.post('/signup',(req,res)=>{
   let body = req.body;
