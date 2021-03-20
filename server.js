@@ -81,24 +81,33 @@ app.post('/login',(req,res)=>{
   })
 })
 
-function saveMessage(sender,room,chat,message){
 
-}
 function makeRoom(name,maker){
-let SQL_MakeChatList='CREATE TABLE ? (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, dateCreated INTEGER)'
-let SQL_makeRoom ='INSERT INTO roomDirectory (name) values(?)'
-db.run(SQL_makeRoom,[name],function (err,results){
+let SQL_makeRoom ='INSERT INTO roomDirectory (name,chatList,memberList) values(?,?,?)'
+//create chatList
+let chatList = `${name}ChatList`
+let SQL_MakeChatList=`CREATE TABLE ${chatList} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, dateCreated INTEGER)`
+db.run(SQL_MakeChatList,[],function(err,results){
   if(err){console.error(err)}
-  let chatList = `${name}ChatList`
-  db.run(SQL_MakeChatList,[chatList],function(err2,results2){
-    if(err2){console.error(err2)}
-  })
+  console.log(this.lastID)
+})
+//create memberList
+let memberList=`${name}MemberList`
+let SQL_makeMemberList =`CREATE TABLE ${memberList} (if INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,role INTEGER,dateAdded INTEGER )`
+db.run(SQL_makeMemberList,[],function(err,results){
+  if(err){console.error(err)}
+})
+//create room, acts as hub
+db.run(SQL_makeRoom,[name,chatList,memberList],function (err,results){
+  if(err){console.error(err)}
 })
 }
 
-makeRoom("tester2","maker")
+function saveMessage(sender,room,chat,message){
 
-function makeChat(roomName,maker){
+}
+
+function makeChat(roomName,chatName,maker){
 
 }
 
