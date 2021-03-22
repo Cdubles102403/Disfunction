@@ -36,15 +36,22 @@ function sidebarTest(){
     if(sidebarOpen){
         document.getElementById("sidebar").style.width = "0%"
         document.getElementById("mainBody").style.width = "100%"
-        document.getElementById("textboxDiv").style.width = "100%"
         button.style.transform = "scaleX(-1)"
         sidebarOpen = false
     }
     else{
         document.getElementById("sidebar").style.width = "25%"
         document.getElementById("mainBody").style.width = "75%"
-        document.getElementById("textboxDiv").style.width = "75%"
         button.style.transform = "scaleX(1)"
         sidebarOpen = true
+    }
+}
+
+//logout
+function die(){
+    const areYouSure = confirm("Are you sure you want to log out?")
+
+    if(areYouSure){
+        
     }
 }

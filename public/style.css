@@ -3,6 +3,7 @@ body.container{
     color:black;
     font-family: 'Courier New', monospace;
     width: 100%;
+    max-height: 100%;
 }
 .title-thing{
     background: rgb(255, 215, 69);
@@ -31,20 +32,36 @@ div#sidebar{
 }
 
 div#mainBody{
+    position: fixed;
     margin: 0%;
+    margin-left: -1%;
     transition: 0.5s;
-    width: 75%
+    width: 75%;
+    height: 100%;
+}
+
+div#chat{
+    position: absolute;
+    overflow-y: auto;
+    height: 90%;
+    width: 100%;
+}
+
+div#chat::-webkit-scrollbar {
+   display: none;
 }
 
 div#textboxDiv{
     position: absolute;
     transition: 0.5s;
     bottom: 0px;
-    width: 75%;
+    width: 100%;
     left: 0px;
     height: 75px;
     border-top: 1px solid white;
+    border-right: 1px solid white;
     padding: 15px;
+    background: rgb(129, 125, 111);
 }
 #textbox{
     width: 90%;
@@ -85,4 +102,15 @@ div#serverLabel {
     top: 5%;
     left: 5%;
     margin: 20px;
+}
+
+#settingsButton{
+    position: relative;
+    left: 75%;
+    top: 75%;
+    background-color: rgb(255, 215, 69);
+    border-radius: 5px;
+    margin: 10px;
+    height: 50px;
+    width: 50px;
 }
