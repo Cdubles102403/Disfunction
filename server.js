@@ -86,7 +86,7 @@ function makeRoom(name,maker){
 let SQL_makeRoom ='INSERT INTO roomDirectory (name,chatList,memberList) values(?,?,?)'
 //create chatList
 let chatList = `${name}ChatList`
-let SQL_MakeChatList=`CREATE TABLE ${chatList} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, dateCreated INTEGER)`
+let SQL_MakeChatList=`CREATE TABLE ${chatList} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, messageList TEXT,dateCreated INTEGER)`
 db.run(SQL_MakeChatList,[],function(err,results){
   if(err){console.error(err)}
   console.log(this.lastID)
@@ -102,15 +102,38 @@ db.run(SQL_makeRoom,[name,chatList,memberList],function (err,results){
   if(err){console.error(err)}
 })
 }
-
+//makeRoom('testChat','maker')
 function saveMessage(sender,room,chat,message){
-
+  //check if is member of room
+  //check if has role to post in chat
+  //save chat to proper chat room message list
+  //return save status 
 }
 
 function makeChat(roomName,chatName,maker){
+  let chatList = `${roomName}ChatList`
+  let messageTable = `${roomName}_${chatName}`
+  let date = Date.now()
+  let SQL_findChatList =`SELECT * FROM ${chatList} WHERE name = ?`
+  let SQL_makeChat = `INSERT INTO ${chatList}(name,dateCreated) values(?,?)`
+  let SQL_makeMessageTable=`CREATE TABLE ${messageList} (id PRIMARY KEY AUTOINCREMENT, name TEXT, message TEXT,date INTEGER)`
 
+  console.log(SQL_findChatList)
+  db.run(SQL_findChatList,[chatName],function(err,results){
+    if(err){console.error(err)} //log error
+    if(results=undefined){
+      //create new chat entry
+      db.run(SQL_makeChat,[chatName],function(err2,results2){
+        if(err2){console.error(err2)}
+        //create new message table
+        db.run(SQL_makeMessageTable,[],function(err3,results3){
+          if(err3){console.error(err3)}
+        })
+      })
+    }
+  })
 }
-
+//makeChat('testChat','chatName','maker')
 //signup route
 app.post('/signup',(req,res)=>{
   let body = req.body;
