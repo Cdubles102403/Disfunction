@@ -93,7 +93,7 @@ db.run(SQL_MakeChatList,[],function(err,results){
 })
 //create memberList
 let memberList=`${name}MemberList`
-let SQL_makeMemberList =`CREATE TABLE ${memberList} (if INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,role INTEGER,dateAdded INTEGER )`
+let SQL_makeMemberList =`CREATE TABLE ${memberList} (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,role INTEGER,dateAdded INTEGER )`
 db.run(SQL_makeMemberList,[],function(err,results){
   if(err){console.error(err)}
 })
@@ -102,10 +102,44 @@ db.run(SQL_makeRoom,[name,chatList,memberList],function (err,results){
   if(err){console.error(err)}
 })
 }
+
+function addMember(member,role,room){
+  let memberList=`${room}MemberList`
+  let SQL_findMember = 'SELECT * FROM members WHERE username = ?'
+  let SQL_insertMember = `INSERT INTO ${memberList} (name,role,dateAdded) values(?,?,?)`
+  let SQL_getMember = `SELECT * FROM ${memberList} WHERE name = ?`
+  //check if member is already in room
+  db.all(SQL_getMember,[member],(err,results)=>{
+    if(err){console.error(err)}
+    console.log(results)
+    if(!results.length>=1){
+      //already in room
+      db.all(SQL_findMember,[member],(err3,results3)=>{
+        if(err3){console.error(err3)}
+          //add member
+          if(results3.length==1){
+            console.log(results3)
+            db.run(SQL_insertMember,[member,role,date],(err2,results2)=>{
+              if(err2){console.error(err2)}
+            })
+          }
+      })
+    }
+  })
+  let date = Date.now()
+    //check if member exists
+  
+}
+addMember('111',1,'testChat')
 //makeRoom('testChat','maker')
 function saveMessage(sender,room,chat,message){
   //check if is member of room
-  //check if has role to post in chat
+  let memberList=`${room}MemberList`
+  let SQL_checkMember = `SELECT * FROM ? WHERE name = ?`
+  db.run(SQL_checkMember,[memberList,sender],(err,results)=>{
+    if(err){console.error(err)}
+    console.log(results)
+  })
   //save chat to proper chat room message list
   //return save status 
 }
