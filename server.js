@@ -81,6 +81,28 @@ app.post('/login',(req,res)=>{
   })
 })
 
+app.post('/makeRoom',(req,res)=>{
+  let body = req.body
+
+  //get room name
+  //sanatize user input
+  //run make room function with proper inputs
+  //send response
+})
+
+app.get("/getRooms",(req,res)=>{
+  // check if room exists
+  //Run make room function
+  //send results
+})
+
+app.post('/addMember',(req,res)=>{
+  //get member
+  //get room name
+  //check if in room
+  //add member to room command
+  //send results
+})
 
 function makeRoom(name,maker){
 let SQL_makeRoom ='INSERT INTO roomDirectory (name,chatList,memberList) values(?,?,?)'
@@ -130,7 +152,6 @@ function addMember(member,role,room){
     //check if member exists
   
 }
-addMember('111',1,'testChat')
 //makeRoom('testChat','maker')
 function saveMessage(sender,room,chat,message){
   //check if is member of room
