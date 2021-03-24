@@ -105,12 +105,42 @@ div#serverLabel {
 }
 
 #settingsButton{
-    position: relative;
+    position: absolute;
     left: 75%;
-    top: 75%;
+    top: 90%;
     background-color: rgb(255, 215, 69);
     border-radius: 5px;
     margin: 10px;
     height: 50px;
     width: 50px;
+}
+
+
+.modal{
+    display: none;
+    position: fixed;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+div#modalContent{
+    position: fixed;
+    height: 200px;
+    top: 10%;
+    left: 52.5%;
+    width: 300px;
+    overflow: auto;
+    z-index: 1px;
+    border: 1px Solid white;
+    border-radius: 5px;
+    padding: 10px;
+    background: rgb(255, 215, 69);
+}
+
+.close{
+    color: rgb(129, 125, 111);
+    font-size: 24px;
+    float: right;
 }

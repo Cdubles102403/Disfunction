@@ -12,10 +12,23 @@
     <title>Document</title>
 </head>
 <body class="container">
+    <div id="createRoom" class="modal">
+        <div id="modalContent">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <label for="createRoomForm"><h1>Create Room</h1></label>
+            <form id="createRoomForm">
+                <label for="roomNameInput">Room Name:</label><br />
+                <input type="text" name="roomNameInput" id="roomNameInput">
+                <button type="submit">Create Room</button>
+            </form>
+        </div>
+    </div>
+
     <div id="sidebar">
         <div class = 'title-thing'>
             <p>DISFUNCTION<p>
         </div>
+        <button onclick="openModal()">Create room</button>
         <a href="settings.html">
             <img src="settings.png" id="settingsButton" alt="Settings">
         </a>
