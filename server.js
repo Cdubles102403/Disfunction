@@ -83,11 +83,24 @@ app.post('/login',(req,res)=>{
 
 app.post('/makeRoom',(req,res)=>{
   let body = req.body
-
+  let SQL_checkForRoom = `SELECT * FROM roomDirecotry WHERE name = ?`
   //get room name
+  let name = body.name;
   //sanatize user input
-  //run make room function with proper inputs
-  //send response
+  sanName = functions.sanitize(name)
+  db.run(SQL_checkForRoom,[name],(err,results)=>{
+    if(err){console.error(err)}
+    if(results.length<1){
+      //make room
+      //run make room function with proper inputs
+      let roomResponse = makeRoom(sanName)
+      res.send({message:roomResponse})
+    }
+    else{
+      //room exists
+      res.send({message:"room_name_taken"})
+    }
+  })
 })
 
 app.get("/getRooms",(req,res)=>{
@@ -122,6 +135,7 @@ db.run(SQL_makeMemberList,[],function(err,results){
 //create room, acts as hub
 db.run(SQL_makeRoom,[name,chatList,memberList],function (err,results){
   if(err){console.error(err)}
+  return "room_made"
 })
 }
 
