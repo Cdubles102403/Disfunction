@@ -57,6 +57,26 @@ function die(){
 }
 
 
+//make room on button click
+function makeRoom(){
+    let token = Cookies.get('token')
+    let name = $('#roomNameInput').val()
+
+    let payload = {
+        body:JSON.stringify({
+            name:name,
+            token:token,
+        }),
+        method:'post',
+        headers:{
+            'content-type':'application/json'
+        }
+    }
+    fetch('/makeRoom',payload)
+        .then(res=> res.json)
+        .then(res=> console.log(res))
+}
+
 
 //Modal stuffs
 

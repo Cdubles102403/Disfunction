@@ -83,12 +83,15 @@ app.post('/login',(req,res)=>{
 
 app.post('/makeRoom',(req,res)=>{
   let body = req.body
-  let SQL_checkForRoom = `SELECT * FROM roomDirecotry WHERE name = ?`
+  let token = body.token
+  let SQL_checkForRoom = `SELECT * FROM roomDirectory WHERE name = ?`
+  //decrpyt token
+  decryptToken = functions.verifyJWT(token)
   //get room name
   let name = body.name;
   //sanatize user input
   sanName = functions.sanitize(name)
-  db.run(SQL_checkForRoom,[name],(err,results)=>{
+  db.all(SQL_checkForRoom,[name],(err,results)=>{
     if(err){console.error(err)}
     if(results.length<1){
       //make room

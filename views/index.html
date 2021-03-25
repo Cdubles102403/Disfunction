@@ -16,11 +16,11 @@
         <div id="modalContent">
             <span class="close" onclick="closeModal()">&times;</span>
             <label for="createRoomForm"><h1>Create Room</h1></label>
-            <form id="createRoomForm">
+            <div id="createRoomForm">
                 <label for="roomNameInput">Room Name:</label><br />
                 <input type="text" name="roomNameInput" id="roomNameInput">
-                <button type="submit">Create Room</button>
-            </form>
+                <button onclick="makeRoom()" type="submit">Create Room</button>
+            </div>
         </div>
     </div>
 
