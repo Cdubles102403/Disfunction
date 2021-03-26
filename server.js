@@ -97,19 +97,24 @@ app.post('/makeRoom',(req,res)=>{
       //make room
       //run make room function with proper inputs
       let roomResponse = makeRoom(sanName)
-      res.send({message:roomResponse})
+      res.send({message:"room-made"})
     }
     else{
       //room exists
-      res.send({message:"room_name_taken"})
+      console.log("room already exists")
+      res.send({message:"room-taken"})
     }
   })
 })
 
 app.get("/getRooms",(req,res)=>{
+  let body = req.body
+  let name = body.name
+  SQL_getRooms = `SELECT `
   // check if room exists
   //Run make room function
-  //send results
+  //send 
+  
 })
 
 app.post('/addMember',(req,res)=>{
@@ -147,6 +152,7 @@ function addMember(member,role,room){
   let SQL_findMember = 'SELECT * FROM members WHERE username = ?'
   let SQL_insertMember = `INSERT INTO ${memberList} (name,role,dateAdded) values(?,?,?)`
   let SQL_getMember = `SELECT * FROM ${memberList} WHERE name = ?`
+  let SQL_addToMemberToRoom =`INSERT INTO memberToRoom (memberName,chatName) values(?,?)`
   //check if member is already in room
   db.all(SQL_getMember,[member],(err,results)=>{
     if(err){console.error(err)}
@@ -158,16 +164,17 @@ function addMember(member,role,room){
           //add member
           if(results3.length==1){
             console.log(results3)
+            let date = Date.now()
             db.run(SQL_insertMember,[member,role,date],(err2,results2)=>{
               if(err2){console.error(err2)}
+              db.run(SQL_addToMemberToRoom,[member,room],(err4,results4)=>{
+                if(err4){console.error(err4)}
+              })
             })
           }
       })
     }
-  })
-  let date = Date.now()
-    //check if member exists
-  
+  })  
 }
 //makeRoom('testChat','maker')
 function saveMessage(sender,room,chat,message){

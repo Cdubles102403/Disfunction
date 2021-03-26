@@ -73,8 +73,8 @@ function makeRoom(){
         }
     }
     fetch('/makeRoom',payload)
-        .then(res=> res.json)
-        .then(res=> console.log(res))
+        .then(res=> res.json())
+        .then(res=> {console.log(res.message)})
 }
 
 
