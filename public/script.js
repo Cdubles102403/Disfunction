@@ -74,14 +74,31 @@ function makeRoom(){
     }
     fetch('/makeRoom',payload)
         .then(res=> res.json())
-        .then(res=> {console.log(res.message)})
+        .then(res=>{
+            closeModal()
+            if(res.message == 'room-made' ){
+                closeModal()
+                fadeMessage('room made',5000)
+            }
+            else{
+                closeModal()
+                fadeMessage('room name taken',5000)
+            }
+            
+        })
 }
-
-
 //Modal stuffs
 
 //get modal div
 const modal = document.getElementById("createRoom")
+
+function fadeMessage(message,time){
+    $('p#message').text(message)
+    setTimeout(function(){
+        $('p#message').text('')
+      },time);
+    
+}
 
 function openModal(){
     modal.style.display = "block";
