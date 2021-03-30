@@ -12,6 +12,8 @@ const sql = require('sqlite3').verbose();
 const chalk = require('chalk')
 const crypto = require('crypto')
 const functions = require('./serverReusables/function.js')
+const rooms = require('./API/roomFunctions.js')
+const chats = require('./API/chatFunctions.js')
 const PORT = 443; //port to start on
 
 
@@ -96,7 +98,7 @@ app.post('/makeRoom',(req,res)=>{
     if(results.length<1){
       //make room
       //run make room function with proper inputs
-      let roomResponse = makeRoom(sanName)
+      let roomResponse = rooms.makeRoom(sanName)
       res.send({message:"room-made"})
     }
     else{
@@ -133,58 +135,6 @@ app.post('/addMember',(req,res)=>{
   //send results
 })
 
-function makeRoom(name,maker){
-let SQL_makeRoom ='INSERT INTO roomDirectory (name,chatList,memberList) values(?,?,?)'
-//create chatList
-let chatList = `${name}ChatList`
-let SQL_MakeChatList=`CREATE TABLE ${chatList} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, messageList TEXT,dateCreated INTEGER)`
-db.run(SQL_MakeChatList,[],function(err,results){
-  if(err){console.error(err)}
-  console.log(this.lastID)
-})
-//create memberList
-let memberList=`${name}MemberList`
-let SQL_makeMemberList =`CREATE TABLE ${memberList} (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,role INTEGER,dateAdded INTEGER )`
-db.run(SQL_makeMemberList,[],function(err,results){
-  if(err){console.error(err)}
-})
-//create room, acts as hub
-db.run(SQL_makeRoom,[name,chatList,memberList],function (err,results){
-  if(err){console.error(err)}
-  return "room_made"
-})
-}
-
-function addMember(member,role,room){
-  let memberList=`${room}MemberList`
-  let SQL_findMember = 'SELECT * FROM members WHERE username = ?'
-  let SQL_insertMember = `INSERT INTO ${memberList} (name,role,dateAdded) values(?,?,?)`
-  let SQL_getMember = `SELECT * FROM ${memberList} WHERE name = ?`
-  let SQL_addToMemberToRoom =`INSERT INTO memberToRoom (memberName,chatName) values(?,?)`
-  //check if member is already in room
-  db.all(SQL_getMember,[member],(err,results)=>{
-    if(err){console.error(err)}
-    console.log(results)
-    if(!results.length>=1){
-      //already in room
-      db.all(SQL_findMember,[member],(err3,results3)=>{
-        if(err3){console.error(err3)}
-          //add member
-          if(results3.length==1){
-            console.log(results3)
-            let date = Date.now()
-            db.run(SQL_insertMember,[member,role,date],(err2,results2)=>{
-              if(err2){console.error(err2)}
-              db.run(SQL_addToMemberToRoom,[member,room],(err4,results4)=>{
-                if(err4){console.error(err4)}
-              })
-            })
-          }
-      })
-    }
-  })  
-}
-//makeRoom('testChat','maker')
 function saveMessage(sender,room,chat,message){
   //check if is member of room
   let memberList=`${room}MemberList`
@@ -197,29 +147,7 @@ function saveMessage(sender,room,chat,message){
   //return save status 
 }
 
-function makeChat(roomName,chatName,maker){
-  let chatList = `${roomName}ChatList`
-  let messageTable = `${roomName}_${chatName}`
-  let date = Date.now()
-  let SQL_findChatList =`SELECT * FROM ${chatList} WHERE name = ?`
-  let SQL_makeChat = `INSERT INTO ${chatList}(name,dateCreated) values(?,?)`
-  let SQL_makeMessageTable=`CREATE TABLE ${messageList} (id PRIMARY KEY AUTOINCREMENT, name TEXT, message TEXT,date INTEGER)`
 
-  console.log(SQL_findChatList)
-  db.run(SQL_findChatList,[chatName],function(err,results){
-    if(err){console.error(err)} //log error
-    if(results=undefined){
-      //create new chat entry
-      db.run(SQL_makeChat,[chatName],function(err2,results2){
-        if(err2){console.error(err2)}
-        //create new message table
-        db.run(SQL_makeMessageTable,[],function(err3,results3){
-          if(err3){console.error(err3)}
-        })
-      })
-    }
-  })
-}
 //makeChat('testChat','chatName','maker')
 //signup route
 app.post('/signup',(req,res)=>{
