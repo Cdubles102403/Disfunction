@@ -107,14 +107,22 @@ app.post('/makeRoom',(req,res)=>{
   })
 })
 
-app.get("/getRooms",(req,res)=>{
-  let body = req.body
-  let name = body.name
-  SQL_getRooms = `SELECT `
-  // check if room exists
-  //Run make room function
-  //send 
-  
+app.post("/getRooms",(req,res)=>{
+  let token = req.body.token
+  let decrypt = functions.verifyJWT(token)
+ 
+  let name = decrypt.data.username
+  console.log(name)
+  SQL_getRooms = `SELECT roomName FROM memberToRoom WHERE memberName = ?`
+  db.all(SQL_getRooms,[name],(err,results)=>{
+    if(err){console.error(err)}
+    if(results.length>=1){
+      res.send({"message":'good-data',"data":results})
+    }
+    else{
+      res.send({"message":"no-rooms-found"})
+    }
+  })
 })
 
 app.post('/addMember',(req,res)=>{

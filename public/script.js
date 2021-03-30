@@ -113,3 +113,22 @@ window.onclick = function(event) {
       modal.style.display = "none";
     }
   }
+
+  function getRooms(){
+    let token = Cookies.get('token')
+
+    payload={
+        body:JSON.stringify({
+            token:token,
+        }),
+        method:'post',
+        headers:{
+            'content-type':'application/json'
+        }
+    }
+
+    fetch('/getRooms',payload)
+        .then(res=>res.json())
+        .then(res => console.log(res))
+  }
+  getRooms()
