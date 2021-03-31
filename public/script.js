@@ -129,6 +129,37 @@ window.onclick = function(event) {
 
     fetch('/getRooms',payload)
         .then(res=>res.json())
-        .then(res => console.log(res))
+        .then(res =>{
+            console.log(res)
+            let array = res.data
+            console.log(array)
+            for (let i = 0; i < array.length; i++) {
+                $('div#rooms').append(`<p class='roomButton'>${array[i].roomName} <button onclick='loadRoom("${array[i].roomName}")'>go to room</button></p> `)
+                
+            }
+        })
+  }
+
+  function loadRoom(room){
+    let token = Cookies.get('token')
+      console.log(room)
+      payload = {
+          body:JSON.stringify({
+            token:token,
+            roomName:room
+          }),
+          method:'post',
+        headers:{
+            'content-type':'application/json'
+        }
+      }
+      fetch('/getRoomData',payload)
+        .then(res => res.json())
+        .then(res =>{
+            $('div#chat').empty()
+            for(let i=0; i<res.data.length;i++){
+                $('div#chat').append(`<p>${res.data[i].message}-${res.data[i].name}</p>`)
+            }
+        })
   }
   getRooms()

@@ -13,16 +13,15 @@ const chalk = require('chalk')
 const crypto = require('crypto')
 const functions = require('./serverReusables/function.js')
 const rooms = require('./API/roomFunctions.js')
-const chats = require('./API/chatFunctions.js')
+const chats = require('./API/chatFunctions.js');
+const { get } = require('http');
 const PORT = 443; //port to start on
-
 
 server.listen(PORT,()=>{
 console.log(`started on port ${PORT}`)
 })
 
 const db = new sql.Database('./db/database.db'); //creates connection to DB
-
 
 app.use(express.json())
 app.use(express.static('views'))
@@ -133,22 +132,9 @@ app.post('/addMember',(req,res)=>{
   //check if in room
   //add member to room command
   //send results
-})
-
-function saveMessage(sender,room,chat,message){
-  //check if is member of room
-  let memberList=`${room}MemberList`
-  let SQL_checkMember = `SELECT * FROM ? WHERE name = ?`
-  db.run(SQL_checkMember,[memberList,sender],(err,results)=>{
-    if(err){console.error(err)}
-    console.log(results)
-  })
-  //save chat to proper chat room message list
-  //return save status 
-}
+})  
 
 
-//makeChat('testChat','chatName','maker')
 //signup route
 app.post('/signup',(req,res)=>{
   let body = req.body;
@@ -159,7 +145,6 @@ app.post('/signup',(req,res)=>{
   var passwordR = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g
   //check password
   if(!password.match(passwordR)){
-    //console.log(chalk.bold.redBright("fix-password"))
     res.send({message:"fix-password"})
     return;
   }
@@ -171,7 +156,6 @@ app.post('/signup',(req,res)=>{
       //insert into database
       const insertSQL='INSERT INTO members(username,email,password) VALUES(?,?,?)'
       let hash = functions.hasher(password)
-      //console.log(chalk.green(hash))
       db.run(insertSQL,[username,email,hash])
         //redirect
       let token = functions.makeJWT(password,email,username)
@@ -183,3 +167,22 @@ app.post('/signup',(req,res)=>{
   })
 })
 
+app.post('/getRoomData',(req,res)=>{
+  let room = req.body.roomName
+  console.log(room)
+  let token = functions.verifyJWT(req.body.token)
+  
+
+  let SQL_getMainRoom = `SELECT mainChat FROM roomDirectory WHERE name = ?`
+  db.all(SQL_getMainRoom,[room],(err,results)=>{
+    if(err){console.error(err)}
+     let mainChat = results[0].mainChat
+     let getChat = `${room}_${mainChat}`
+     let SQL_getChats = `SELECT name,message,date FROM ${getChat}`
+
+     db.all(SQL_getChats,[],(err2,results2)=>{
+      if(err2){console.error(err2)}
+      res.send({"message":"room-data","data":results2})
+    })
+  })
+})

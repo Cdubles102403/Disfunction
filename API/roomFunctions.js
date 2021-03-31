@@ -30,7 +30,7 @@ let functions = {
     let SQL_findMember = 'SELECT * FROM members WHERE username = ?'
     let SQL_insertMember = `INSERT INTO ${memberList} (name,role,dateAdded) values(?,?,?)`
     let SQL_getMember = `SELECT * FROM ${memberList} WHERE name = ?`
-    let SQL_addToMemberToRoom =`INSERT INTO memberToRoom (memberName,chatName) values(?,?)`
+    let SQL_addToMemberToRoom =`INSERT INTO memberToRoom (memberName,roomName) values(?,?)`
     //check if member is already in room
     db.all(SQL_getMember,[member],(err,results)=>{
       if(err){console.error(err)}
