@@ -5,6 +5,9 @@ $(function(){
     if(token ==undefined){
         window.location.assign('/signup.html')
     }
+    else{
+        getRooms()
+    }
     function send(){
         let msg = $('input#textbox').val()
         let payload = {message:msg,token:token}
@@ -29,7 +32,7 @@ $(function(){
 })
 
 let sidebarOpen = true
-
+let room='';
 function sidebarTest(){
     const button = document.getElementById("sidebarControl")
 
@@ -91,6 +94,7 @@ function makeRoom(){
 
 //get modal div
 const modal = document.getElementById("createRoom")
+const chatModal = document.getElementById("createChat")
 
 function fadeMessage(message,time){
     $('p#message').text(message)
@@ -103,14 +107,25 @@ function fadeMessage(message,time){
 function openModal(){
     modal.style.display = "block";
 }
-
+function openChatModal(){
+    chatModal.style.display ="block";
+}
+function closeChatModal(){
+    chatModal.style.display ="none";
+}
 function closeModal(){
     modal.style.display = "none";
 }
 
+function openChat(){
+    openChatModal()
+}
+
+
 window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    if (event.target == modal || event.target == chatModal) {
+      modal.style.display = "none"
+      chatModal.style.display = "none"
     }
   }
 
@@ -134,13 +149,14 @@ window.onclick = function(event) {
             let array = res.data
             console.log(array)
             for (let i = 0; i < array.length; i++) {
-                $('div#rooms').append(`<p class='roomButton'>${array[i].roomName} <button onclick='loadRoom("${array[i].roomName}")'>go to room</button></p> `)
+                $('select#rooms').append(`<option class='roomButton' value='${array[i].roomName}'>${array[i].roomName} </option> `)
                 
             }
         })
   }
 
-  function loadRoom(room){
+  function loadRoom(){
+       room = $('select#rooms').val()
     let token = Cookies.get('token')
       console.log(room)
       payload = {
@@ -162,4 +178,26 @@ window.onclick = function(event) {
             }
         })
   }
-  getRooms()
+
+function CreateChat(){
+    if(room ==''){
+        return
+    }
+    console.log('check')
+    let token = Cookies.get('token')
+    let chatName = $("input#chatNameInput").val()
+    console.log(chatName)
+    let payload ={
+        body:JSON.stringify({
+            token:token,
+            room:room,
+            chat:chatName
+        }),
+        method:'post',
+        headers:{
+            'content-type':'application/json'
+        }
+    }
+    fetch('/makeChat',payload)
+        .then(res=> res.json())
+}

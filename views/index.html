@@ -23,6 +23,19 @@
             </div>
         </div>
     </div>
+    
+    <div class='modal' id='createChat'>
+        <div id='modalContent'>
+        <span class="close" onclick="closeChatModal()">&times;</span>
+        <label for="chatName"><h1>Create Chat</h1></label>
+        <div id='createChatForm'>
+            <label for="chatNameInput">Chat Name:</label>
+            <input type="text" name="chatNameInput" id="chatNameInput">
+            <button onclick='CreateChat()'>Create chat</button>
+        </div>
+    </div>
+</div>
+    
 
     <div id="sidebar">
         <div class = 'title-thing'>
@@ -30,7 +43,13 @@
         </div>
         <p id='message'></p>
         <button onclick="openModal()">Create room</button>
-        <div id='rooms'></div>
+        <button onclick='openChat()'>Create chat</button>
+        <div id='rooms'>
+            <select id="rooms">
+                
+              </select>
+              <button id='openRoom' onclick="loadRoom()">open room</button>
+        </div>
         <a href="settings.html">
             <img src="settings.png" id="settingsButton" alt="Settings">
         </a>

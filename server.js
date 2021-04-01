@@ -14,7 +14,6 @@ const crypto = require('crypto')
 const functions = require('./serverReusables/function.js')
 const rooms = require('./API/roomFunctions.js')
 const chats = require('./API/chatFunctions.js');
-const { get } = require('http');
 const PORT = 443; //port to start on
 
 server.listen(PORT,()=>{
@@ -171,7 +170,6 @@ app.post('/getRoomData',(req,res)=>{
   let room = req.body.roomName
   console.log(room)
   let token = functions.verifyJWT(req.body.token)
-  
 
   let SQL_getMainRoom = `SELECT mainChat FROM roomDirectory WHERE name = ?`
   db.all(SQL_getMainRoom,[room],(err,results)=>{
@@ -185,4 +183,11 @@ app.post('/getRoomData',(req,res)=>{
       res.send({"message":"room-data","data":results2})
     })
   })
+})
+
+app.post('/makechat',(req,res)=>{
+  console.log(req.body)
+  let token = functions.verifyJWT(req.body.token)
+  chats.makeChat(req.body.room,req.body.chat,token.username)
+  res.send({"message":"good"})
 })
