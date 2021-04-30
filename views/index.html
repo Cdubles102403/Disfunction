@@ -49,6 +49,12 @@
                 
               </select>
               <button id='openRoom' onclick="loadRoom()">open room</button>
+
+              <div id='members'></div>
+              <div>
+                  <input type="text" id='memberToAdd'>
+                  <button id='addMemberButton' onclick='addMember()'>add member</button>
+              </div>
         </div>
         <a href="settings.html">
             <img src="settings.png" id="settingsButton" alt="Settings">
@@ -66,5 +72,6 @@
         </div>
     </div>
     <script src="script.js"></script>
+    <script src="addMember.js"></script>
 </body>
 </html>

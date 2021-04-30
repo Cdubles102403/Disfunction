@@ -126,11 +126,27 @@ app.post("/getRooms",(req,res)=>{
 })
 
 app.post('/addMember',(req,res)=>{
-  //get member
-  //get room name
-  //check if in room
-  //add member to room command
-  //send results
+  let member = req.body.member
+  let role = '1'
+  let room = req.body.room
+  let token = functions.verifyJWT(req.body.token)
+  let memberList=`${room}MemberList`
+  let SQL_checkMember =  `SELECT * FROM ${memberList} WHERE name =?`
+  console.log(token.data.username)
+  db.all(SQL_checkMember,[token.data.username],(err,results)=>{
+    if(err){console.error(err)}
+    console.log(results)
+    if(results.length==1){
+      //member is in room
+      rooms.addMember(member,role,room)
+      console.log('adding member to room')
+    }
+    else{
+      console.log('bad creds')
+    }
+  })
+
+  res.end()
 })  
 
 
@@ -190,4 +206,11 @@ app.post('/makechat',(req,res)=>{
   let token = functions.verifyJWT(req.body.token)
   chats.makeChat(req.body.room,req.body.chat,token.username)
   res.send({"message":"good"})
+})
+
+app.post('/getChats',(req,res)=>{
+  let roomName = req.body.name
+  let token = functions.verifyJWT(req.body.token)
+
+  let SQL_getChats =`SELECT * FROM `
 })
