@@ -27,9 +27,25 @@ app.use(express.static('views'))
 app.use(express.static('public'))
 
 io.on('connection', (socket) => {
-    console.log(chalk.black.bgGreen('a user connected'));
+    console.log(chalk.black.bgGreen(`user connected: ${socket.id}`));
+    try{
+    let token = socket.handshake.headers.cookie.slice(6)
+    token = functions.verifyJWT(token)
+    console.log(token)
+    let username = token.data.username
+    let socket_id = socket.id
+    let SQL_addToLogin = `INSERT INTO loggedIn(user,socketID) values(?,?)`
+    db.run(SQL_addToLogin,[username,socket_id],(err)=>{if(err){console.error(err)}})
+    }
+    catch{
+      console.log('no token or bad token')
+    }
+    
     socket.on('disconnect', () => {
-      console.log(chalk.black.bgRed('user disconnected'));
+      console.log(chalk.black.bgRed(`user disconnected: ${socket.id}`));
+      //delete from logged in DB
+      let SQL_deleteLogin = `DELETE FROM loggedIn WHERE socketID=?`
+      db.run(SQL_deleteLogin,[socket.id],(err)=>{console.error(err)})
     });
     socket.on('sendMessage',(payload)=>{
       //console.log(payload)
