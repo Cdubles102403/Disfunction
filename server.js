@@ -14,11 +14,10 @@ const crypto = require('crypto')
 const functions = require('./serverReusables/function.js')
 const rooms = require('./API/roomFunctions.js')
 const chats = require('./API/chatFunctions.js');
+const socketRoom = require('./serverReusables/socketRoomFunctions.js')
 const PORT = 443; //port to start on
 
-server.listen(PORT,()=>{
-console.log(`started on port ${PORT}`)
-})
+const socketRooms = []
 
 const db = new sql.Database('./db/database.db'); //creates connection to DB
 
@@ -46,6 +45,7 @@ io.on('connection', (socket) => {
       //delete from logged in DB
       let SQL_deleteLogin = `DELETE FROM loggedIn WHERE socketID=?`
       db.run(SQL_deleteLogin,[socket.id],(err)=>{console.error(err)})
+      //takeout of room
     });
     socket.on('sendMessage',(payload)=>{
       //console.log(payload)
@@ -202,7 +202,7 @@ app.post('/getRoomData',(req,res)=>{
   let room = req.body.roomName
   console.log(room)
   let token = functions.verifyJWT(req.body.token)
-
+  //add to room 
   let SQL_getMainRoom = `SELECT mainChat FROM roomDirectory WHERE name = ?`
   db.all(SQL_getMainRoom,[room],(err,results)=>{
     if(err){console.error(err)}
@@ -230,3 +230,31 @@ app.post('/getChats',(req,res)=>{
 
   let SQL_getChats =`SELECT * FROM `
 })
+
+function startUp(){
+  //make a room object for each room
+  //get amount of rooms and names
+  let SQL_rowCount = 'SELECT COUNT(*) FROM roomDirectory'
+  let SQL_getRoomName = 'SELECT name FROM roomDirectory WHERE id=?'
+  db.all(SQL_rowCount,[],(err,results)=>{
+    if(err){console.error(err)}
+    //console.log(results)
+    let rows = results[0]["COUNT(*)"]
+    for(let i=1;i<=rows;i++){
+      db.get(SQL_getRoomName,[i],(err2,results2)=>{
+        let name = results2.name
+        let room = socketRoom.makeRoom(name)
+        socketRooms.push(room)
+        console.log(socketRooms)
+      })
+        
+    }
+    server.listen(PORT,()=>{
+      console.log(`started on port ${PORT}`)
+      })
+  })
+
+  
+}
+
+startUp()
