@@ -8,13 +8,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link id="style" rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body class="container">
     <div id="createRoom" class="modal">
         <div id="modalContent">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="closeButton" onclick="closeModal()">&times;</span>
             <label for="createRoomForm"><h1>Create Room</h1></label>
             <div id="createRoomForm">
                 <label for="roomNameInput">Room Name:</label><br />
@@ -23,19 +23,6 @@
             </div>
         </div>
     </div>
-    
-    <div class='modal' id='createChat'>
-        <div id='modalContent'>
-        <span class="close" onclick="closeChatModal()">&times;</span>
-        <label for="chatName"><h1>Create Chat</h1></label>
-        <div id='createChatForm'>
-            <label for="chatNameInput">Chat Name:</label>
-            <input type="text" name="chatNameInput" id="chatNameInput">
-            <button onclick='CreateChat()'>Create chat</button>
-        </div>
-    </div>
-</div>
-    
 
     <div id="sidebar">
         <div class = 'title-thing'>
@@ -43,19 +30,6 @@
         </div>
         <p id='message'></p>
         <button onclick="openModal()">Create room</button>
-        <button onclick='openChat()'>Create chat</button>
-        <div id='rooms'>
-            <select id="rooms">
-                
-              </select>
-              <button id='openRoom' onclick="loadRoom()">open room</button>
-
-              <div id='members'></div>
-              <div>
-                  <input type="text" id='memberToAdd'>
-                  <button id='addMemberButton' onclick='addMember()'>add member</button>
-              </div>
-        </div>
         <a href="settings.html">
             <img src="settings.png" id="settingsButton" alt="Settings">
         </a>
@@ -72,6 +46,5 @@
         </div>
     </div>
     <script src="script.js"></script>
-    <script src="addMember.js"></script>
 </body>
 </html>

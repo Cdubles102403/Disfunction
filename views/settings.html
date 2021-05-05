@@ -7,14 +7,43 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-    <script src="settings.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
     <h1>Settings</h1>
-    <button id="logOut" onclick="die()">Log Out</button>
+    <label for="fontSize">Font Size</label> 
+    <input type="number" name="fontSize" id="fontSize" value=14 max=32 min=6>
+    <br>
+
+    <label for="appearence">Appearence</label> 
+    <select name="appearence" id="appearence">
+        <option value="light">Light (default)</option>
+        <option value="dark">Dark (better)</option>
+    </select>
+    <br>
+
+    <h2>Color Settings</h2>
+    <label for="background">Background Color</label>
+    <input type="color" name="background" id="background">
+    <br>
+
+    <label for="accessories">Accessories Color</label>
+    <input type="color" name="accessories" id="accessories">
+    <br>
+
+    <label for="text">Text Color</label>
+    <input type="color" name="text" id="text">
+    <br>
+    <br>
+    
+    <button id="deleteAccount" onclick="megaDie()">Delete Account</button>
+    <br>
+
+    <button id="logout" onclick="die()">Log Out</button>
     <br />
+    
     <a href="index.html">Return to Main Page</a>
 </body>
 </html>

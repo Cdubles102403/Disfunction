@@ -1,0 +1,154 @@
+body.container{
+    background: rgb(80, 50, 75);
+    color:rgb(175, 160, 175);
+    font-family: 'Courier New', monospace;
+    width: 100%;
+    max-height: 100%;
+}
+.title-thing{
+    background: rgb(190, 100, 180);
+    padding: 5px 0;
+    color: rgb(61, 61, 61);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-size:30px;
+    font-weight: 550;
+    height: 75px;
+    width:250px;
+}
+
+div#sidebar{
+    width: 25%;
+    right:0;
+    position: fixed;
+    border-left: 1px solid rgb(175, 160, 175);
+    height: 100%;
+    transition: 0.5s;
+}
+
+div#mainBody{
+    position: fixed;
+    margin: 0%;
+    margin-left: -1%;
+    transition: 0.5s;
+    width: 75%;
+    height: 100%;
+}
+
+div#chat{
+    position: absolute;
+    overflow-y: auto;
+    height: 90%;
+    width: 100%;
+}
+
+div#chat::-webkit-scrollbar {
+   display: none;
+}
+
+div#textboxDiv{
+    position: absolute;
+    transition: 0.5s;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    height: 75px;
+    border-top: 1px solid rgb(175, 160, 175);
+    border-right: 1px solid rgb(175, 160, 175);
+    padding: 15px;
+    background: rgb(80, 50, 75);
+}
+#textbox{
+    width: 90%;
+    height: 40px;
+    border-radius: 100px;
+    background-color:rgb(80, 50, 75);
+    border: 1px solid rgb(175, 160, 175);
+    padding: 5px;
+}
+button#submit{
+    background: black;
+    color:black;
+    width: 75px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: rgb(190, 100, 180);
+}
+
+p.message{
+    border-top: 1px solid rgb(175, 160, 175);
+    border-bottom: 1px solid rgb(175, 160, 175);
+    padding: 15px;
+}
+
+#sidebarControl{
+    position: relative;
+    left: 93%;
+    background-color: rgb(190, 100, 180);
+    border-radius: 5px;
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+    transition: 0.5s;
+}
+
+div#serverLabel {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    margin: 20px;
+}
+
+#settingsButton{
+    position: absolute;
+    left: 75%;
+    top: 90%;
+    background-color: rgb(190, 100, 180);
+    border-radius: 5px;
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+}
+
+
+.modal{
+    display: none;
+    position: fixed;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+div#modalContent{
+    position: fixed;
+    height: 200px;
+    top: 10%;
+    left: 52.5%;
+    width: 300px;
+    overflow: auto;
+    z-index: 1px;
+    border: 1px Solid black;
+    border-radius: 5px;
+    padding: 10px;
+    background: rgb(190, 100, 180);
+}
+
+.closeButton{
+    color: rgba(0,0,0,0.6);
+    font-size: 24px;
+    float: right;
+    cursor: pointer;
+}
+
+.closeButton:hover{
+    color: rgba(0,0,0,1);
+    font-size: 24px;
+    float: right;
+    cursor: pointer;
+}
