@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
     }
     
     socket.on('disconnect', () => {
-      console.log(chalk.black.bgRed(`user disconnected: ${socket.id}`));
+      console.log(chalk.black.bgRed(`user disconnected: ${socket.id}`))
       //delete from logged in DB
       let SQL_deleteLogin = `DELETE FROM loggedIn WHERE socketID=?`
       db.run(SQL_deleteLogin,[socket.id],(err)=>{console.error(err)})
@@ -53,7 +53,11 @@ io.on('connection', (socket) => {
         let decodedToken = functions.verifyJWT(payload.token)
         //console.log(decodedToken) 
         let msgSan = functions.sanitize(payload.message)
-        let message = `<p class="message">${msgSan}-<b class="messageTag">${decodedToken.data.username}</b></p>`
+        let sender = decodedToken.data.username
+        let room = payload.room
+        let chat = payload.chat
+        saveMessage(msgSan,sender,room,chat)
+        let message = `<p class="message">${msgSan}-<b class="messageTag">${sender}</b></p>`
         socket.broadcast.emit("msg",message)
         socket.emit("msg",message)
       } catch (error) {
@@ -202,17 +206,24 @@ app.post('/getRoomData',(req,res)=>{
   let room = req.body.roomName
   console.log(room)
   let token = functions.verifyJWT(req.body.token)
-  //add to room 
+
+  let roomChatList = `${room}ChatList`
+  let SQL_GetOherChats = `SELECT name from "${roomChatList}"`
+  
   let SQL_getMainRoom = `SELECT mainChat FROM roomDirectory WHERE name = ?`
   db.all(SQL_getMainRoom,[room],(err,results)=>{
     if(err){console.error(err)}
      let mainChat = results[0].mainChat
      let getChat = `${room}_${mainChat}`
      let SQL_getChats = `SELECT name,message,date FROM ${getChat}`
-
+    
      db.all(SQL_getChats,[],(err2,results2)=>{
       if(err2){console.error(err2)}
-      res.send({"message":"room-data","data":results2})
+      db.all(SQL_GetOherChats,[],(err3,results3)=>{
+        if(err){console.error(err3)}
+      console.log(results3)
+      res.send({"message":"room-data","data":results2,"chats":results3})
+      })
     })
   })
 })

@@ -9,7 +9,11 @@ $(function () {
   }
   function send() {
     let msg = $("input#textbox").val();
-    let payload = { message: msg, token: token };
+    let payload = {
+       message: msg, 
+      token: token,
+      room:$('select#rooms').val(), 
+    };
     socket.emit("sendMessage", payload);
     $("input#textbox").val("");
   }
@@ -141,13 +145,14 @@ function getRooms() {
 }
 
 function loadRoom() {
-  room = $("select#rooms").val();
+  room = $("select#rooms").val()
   let token = Cookies.get("token");
   console.log(room);
   payload = {
     body: JSON.stringify({
       token: token,
       roomName: room,
+      chatName:chat
     }),
     method: "post",
     headers: {
@@ -162,6 +167,10 @@ function loadRoom() {
         $("div#chat").append(
           `<p>${res.data[i].message}-${res.data[i].name}</p>`
         );
+      }
+      for(let i=0; i<res.chats.length;i++){
+        console.log(i)
+        $("div#chatsLists").append(`<p>${res.chats[i].name} <button onclick='openChat("${res.chats[i].name}")'>open chat</button></p>`)
       }
     });
 }
@@ -188,3 +197,6 @@ function CreateChat() {
   };
   fetch("/makeChat", payload).then((res) => res.json());
 }
+ function openChat(chat){
+  alert(chat)
+ }
